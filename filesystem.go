@@ -50,12 +50,7 @@ func NewServeFileSystem(contentFolderPath string) (s *ServeFileSystem, err error
 
 func (s *ServeFileSystem) ServeHTTP(w http.ResponseWriter, r *http.Request, defaultFileName, targetFileName string) {
 	if targetFileName == "" {
-		if len(r.URL.Path) > s.urlPathPrefixLen {
-			targetFileName = r.URL.Path[s.urlPathPrefixLen:]
-		}
-		if (targetFileName == "/") == (targetFileName == "") {
-			targetFileName = defaultFileName
-		}
+		targetFileName = extractTargetContentPath(r, s.urlPathPrefixLen, defaultFileName)
 	}
 	targetFilePath := filepath.Join(s.contentFolderPath, targetFileName)
 	if !strings.HasPrefix(targetFilePath, s.contentFolderPath) {

@@ -54,12 +54,7 @@ func (s *ServeZipArchive) ServeHTTP(w http.ResponseWriter, r *http.Request, defa
 		return
 	}
 	if targetFileName == "" {
-		if len(r.URL.Path) > s.urlPathPrefixLen {
-			targetFileName = r.URL.Path[s.urlPathPrefixLen:]
-		}
-		if (targetFileName == "/") == (targetFileName == "") {
-			targetFileName = defaultFileName
-		}
+		targetFileName = extractTargetContentPath(r, s.urlPathPrefixLen, defaultFileName)
 	}
 	if targetFileName == "" {
 		http.NotFound(w, r)
