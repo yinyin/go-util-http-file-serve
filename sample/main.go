@@ -50,6 +50,7 @@ func main() {
 		contentServer:        setupContentServer(contentFolderPath, contentZipPath, contentStorePrefix),
 		targetContentRelPath: targetRelPath,
 	}
+	defer h.Close()
 	log.Printf("INFO: relative path to target content: [%s]", targetRelPath)
 	s := &http.Server{
 		Addr:         httpAddr,
