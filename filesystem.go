@@ -59,8 +59,12 @@ func (s *ServeFileSystem) ServeHTTP(w http.ResponseWriter, r *http.Request, defa
 	}
 	fileinfo, err := os.Stat(targetFilePath)
 	if nil != err {
-		http.Error(w, "internal error (file-system)", http.StatusInternalServerError)
-		log.Printf("WARN: failed on stat file [%s]: %v", targetFilePath, err)
+		if os.IsNotExist(err) {
+			http.NotFound(w, r)
+		} else {
+			http.Error(w, "internal error (file-system)", http.StatusInternalServerError)
+			log.Printf("WARN: failed on stat file [%s]: %v", targetFilePath, err)
+		}
 		return
 	}
 	if fileinfo.IsDir() {
