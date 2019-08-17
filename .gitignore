@@ -38,3 +38,6 @@ Icon
 *.test
 *.out
 .glide/
+
+/sample-httpd
+
