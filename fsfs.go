@@ -89,6 +89,7 @@ func (s *ServeFS) ServeHTTP(w http.ResponseWriter, r *http.Request, defaultFileN
 	if !ok {
 		http.Error(w, "internal error (fs-FS)", http.StatusInternalServerError)
 		log.Printf("WARN: failed on cast file reference [%s]: %v", targetFilePath, err)
+		return
 	}
 	http.ServeContent(w, r, targetFilePath, s.contentModTime, fAccess)
 }
